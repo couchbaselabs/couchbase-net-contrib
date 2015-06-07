@@ -30,7 +30,8 @@ namespace Couchbase.NetClient.Contrib.Tests
         [Test]
         public void Test_InsertFromJson()
         {
-            _bucket.Remove("25892e17-80f6-415f-9c65-7395632f0223");
+            var id = "25892e17-80f6-415f-9c65-7395632f0223";
+            _bucket.Remove(id);
             var json = File.ReadAllText("Data\\doc-with-embedded-id.json");
             var result = _bucket.ExtractKeyAndInsert<dynamic>(json, "_id");
             Assert.IsTrue(result.Success);
@@ -54,11 +55,11 @@ namespace Couchbase.NetClient.Contrib.Tests
         [Test]
         public void When_Id_Field_Exists_It_Is_Removed_From_Document_Object()
         {
-            _bucket.Remove("25892e17-80f6-415f-9c65-7395632f0223");
+            var id = "25892e17-80f6-415f-9c65-7395632f0223";
+            _bucket.Remove(id);
             var json = File.ReadAllText("Data\\doc-with-embedded-id.json");
 
-            string id;
-            var insert = _bucket.ExtractKeyAndInsert<object>(json, "_id", out id);
+            var insert = _bucket.ExtractKeyAndInsert<object>(json, "_id");
             Assert.IsTrue(insert.Success);
 
             var get = _bucket.GetDocument<dynamic>(id);
@@ -74,7 +75,7 @@ namespace Couchbase.NetClient.Contrib.Tests
             _bucket.Remove("25892e17-80f6-415f-9c65-7395632f0223");
             var json = File.ReadAllText("Data\\doc-with-embedded-id.json");
 
-            string id;
+            string id = null;
             var insert = _bucket.ExtractKeyAndInsert<string>(json, "_id", out id);//should be fixed at some point
             Assert.IsTrue(insert.Success);
 
@@ -98,11 +99,12 @@ namespace Couchbase.NetClient.Contrib.Tests
             {
                 using (var bucket = cluster.OpenBucket())
                 {
-                    bucket.Remove("25892e17-80f6-415f-9c65-7395632f0223");
+                    var id = "25892e17-80f6-415f-9c65-7395632f0223";
+                    bucket.Remove(id);
                     var json = File.ReadAllText("Data\\doc-with-embedded-id.json");
 
-                    var id = string.Empty;
-                    bucket.ExtractKeyAndInsert<QueueItem>(json, "Id", out id);
+                    bucket.ExtractKeyAndInsert<QueueItem>(json, "Id");
+
                     var get = bucket.GetDocument<dynamic>(id);
 
                     Assert.IsNull(get.Content._id);
