@@ -63,6 +63,7 @@
     <Compile Include="Serializers\Jil\JilSerializerTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="Data\doc-with-embedded-id.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

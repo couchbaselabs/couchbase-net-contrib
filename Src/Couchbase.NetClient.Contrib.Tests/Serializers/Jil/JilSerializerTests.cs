@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -162,6 +163,15 @@ namespace Couchbase.NetClient.Contrib.Tests.Serializers.Jil
 
             //dynamic does not quite work as expected...
             //Assert.AreEqual(expected.Id, actual.Id);
+        }
+
+        [Test]
+        public void Test_AppConfig_Configuration()
+        {
+            var cluster = new Cluster("couchbaseClients/couchbase");
+            var bucket = cluster.OpenBucket();
+
+            Assert.IsInstanceOf<JilSerializer>(cluster.Configuration.Serializer());
         }
     }
 }

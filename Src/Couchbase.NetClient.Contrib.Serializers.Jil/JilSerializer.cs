@@ -70,7 +70,6 @@ namespace Couchbase.NetClient.Contrib.Serializers.Jil
                     else
                     {
                         value = JSON.Deserialize<T>(sr, _options);
-
                     }
                 }
             }
