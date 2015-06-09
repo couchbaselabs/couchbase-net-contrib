@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Couchbase.Configuration.Client;
 using Couchbase.Core;
+using Couchbase.Core.Serialization;
 using NUnit.Framework;
 using Couchbase.NetClient.Contrib;
 using Couchbase.NetClient.Contrib.ContractResolvers;
@@ -87,15 +88,14 @@ namespace Couchbase.NetClient.Contrib.Tests
         [Test]
         public void When_Type_Is_Poco_Id_Is_Removed_From_Document()
         {
-
-            using (var cluster = new Cluster(new ClientConfiguration
+            var config = new ClientConfiguration
             {
-                SerializationSettings =
-                    new JsonSerializerSettings
-                    {
-                        ContractResolver = new IgnoreFieldContractResolver("_id")
-                    }
-            }))
+                Serializer = () => new DefaultSerializer(new JsonSerializerSettings(), new JsonSerializerSettings
+                {
+                    ContractResolver = new IgnoreFieldContractResolver("_id")
+                })
+            };
+            using (var cluster = new Cluster(config))
             {
                 using (var bucket = cluster.OpenBucket())
                 {
